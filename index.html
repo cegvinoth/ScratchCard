@@ -175,37 +175,45 @@ function mouseEventsCheck()
    matrix.mouseover = function(mouseData){
      if(counter === 9)
      {
-       nextTexture = PIXI.utils.TextureCache["assets/next.png"];
-       nextSprite = new PIXI.Sprite(nextTexture);
-       nextSprite.position.set(300,530);
-       nextSprite.interactive = true;
-       stage.removeChild(sprite1);
-       stage.addChild(nextSprite);
-       renderer.render(stage);
-       nextSprite.click = function(mouseData){
-         nextGame();
-       }
+       //just skip
      }
      else {
        removeScratches(mouseData);
+       if(counter === 9)
+       {
+         nextTexture = PIXI.utils.TextureCache["assets/next.png"];
+         nextSprite = new PIXI.Sprite(nextTexture);
+         nextSprite.position.set(300,530);
+         nextSprite.interactive = true;
+         stage.removeChild(sprite1);
+         stage.addChild(nextSprite);
+         renderer.render(stage);
+         nextSprite.click = function(mouseData){
+           nextGame();
+         }
+       }
      }
   }
   matrix.touchstart = function(touchData){
     if(counter === 9)
     {
-      nextTexture = PIXI.utils.TextureCache["assets/next.png"];
-      nextSprite = new PIXI.Sprite(nextTexture);
-      nextSprite.position.set(300,530);
-      nextSprite.interactive = true;
-      stage.removeChild(sprite1);
-      stage.addChild(nextSprite);
-      renderer.render(stage);
-      nextSprite.touchstart = function(touchData){
-        nextGame();
-      }
+      //just skip
     }
     else {
       removeScratches(touchData);
+      if(counter === 9)
+      {
+        nextTexture = PIXI.utils.TextureCache["assets/next.png"];
+        nextSprite = new PIXI.Sprite(nextTexture);
+        nextSprite.position.set(300,530);
+        nextSprite.interactive = true;
+        stage.removeChild(sprite1);
+        stage.addChild(nextSprite);
+        renderer.render(stage);
+        nextSprite.click = function(mouseData){
+          nextGame();
+        }
+      }
     }
  }
   sprite1.click = function(mouseData){
