@@ -173,18 +173,18 @@ function mouseEventsCheck()
 {
 
    matrix.mouseover = function(mouseData){
-     if(counter === 8)
+     if(counter === 9)
      {
        nextTexture = PIXI.utils.TextureCache["assets/next.png"];
        nextSprite = new PIXI.Sprite(nextTexture);
        nextSprite.position.set(300,530);
        nextSprite.interactive = true;
-       nextSprite.click = function(mouseData){
-         nextGame();
-       }
        stage.removeChild(sprite1);
        stage.addChild(nextSprite);
        renderer.render(stage);
+       nextSprite.click = function(mouseData){
+         nextGame();
+       }
      }
      else {
        removeScratches(mouseData);
@@ -197,12 +197,12 @@ function mouseEventsCheck()
       nextSprite = new PIXI.Sprite(nextTexture);
       nextSprite.position.set(300,530);
       nextSprite.interactive = true;
-      nextSprite.click = function(touchData){
-        nextGame();
-      }
       stage.removeChild(sprite1);
       stage.addChild(nextSprite);
       renderer.render(stage);
+      nextSprite.touchstart = function(touchData){
+        nextGame();
+      }
     }
     else {
       removeScratches(touchData);
