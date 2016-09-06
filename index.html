@@ -1,0 +1,322 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ScratchCard Game Task</title>
+<script src="js/pixi.min.js"></script>
+<head>
+<body>
+<script>
+
+var renderer;
+var stage;
+var sprite1;
+var playtexture;
+var scratch00;
+var scratchTexture;
+var ctx;
+var matrix;
+var matrix00;
+var matrix01;
+var matrix02;
+var matrix10;
+var matrix11;
+var matrix12;
+var matrix20;
+var matrix21;
+var matrix22;
+var matrix00Texture;
+var matrix01Texture;
+var matrix02Texture;
+var matrix10Texture;
+var matrix11Texture;
+var matrix12Texture;
+var matrix20Texture;
+var matrix21Texture;
+var matrix22Texture;
+var myCanvas;
+var counter = 0;
+var message;
+var message1;
+var flag = [0,0,0,0,0,0,0,0,0];
+var nextSprite;
+var nextTexture;
+var bgTexture;
+var bgSprite;
+
+renderer = PIXI.autoDetectRenderer(800, 600 ,{antialias: true, transparent: false, resolution: 1});
+renderer.autoResize = true;
+document.body.appendChild(renderer.view);
+stage = new PIXI.Container();
+matrix = new PIXI.Container();
+
+loadImages();  //Load images
+
+function loadImages()
+{
+  PIXI.loader
+  .add([
+    "assets/50.png",
+    "assets/100.png",
+    "assets/10000.png",
+    "assets/100000.png",
+    "assets/freeplay.png",
+    "assets/scratch.png",
+    "assets/play.png",
+    "assets/next.png",
+    "assets/bg.jpeg"
+  ])
+  .load(setup);
+}
+
+function setup()
+{
+  bgTexture = PIXI.utils.TextureCache["assets/bg.jpeg"];
+  bgSprite = new PIXI.Sprite(bgTexture);
+  bgSprite.position.set(0,0);
+
+  playtexture = PIXI.utils.TextureCache["assets/play.png"];
+  sprite1 = new PIXI.Sprite(playtexture);
+  sprite1.position.set(300,530);
+  sprite1.interactive = true;
+
+  scratchTexture = PIXI.utils.TextureCache["assets/scratch.png"];
+
+  addMatrixSprites();
+  matrix.interactive = false;
+  mouseEventsCheck();
+
+  stage.addChild(bgSprite);
+  stage.addChild(sprite1);
+  stage.addChild(matrix);
+  renderer.render(stage);
+
+}
+
+function addMatrixSprites()
+{
+  matrix00Texture = PIXI.utils.TextureCache["assets/50.png"];
+  matrix00 = new PIXI.Sprite(matrix00Texture);
+  matrix00.position.set(300,50);
+  scratch00 = new PIXI.Sprite(scratchTexture);
+  scratch00.position.set(300,50);
+  matrix.addChild(matrix00);
+  matrix.addChild(scratch00);
+
+  matrix01Texture = PIXI.utils.TextureCache["assets/100.png"];
+  matrix01 = new PIXI.Sprite(matrix01Texture);
+  matrix01.position.set(450,50);
+  scratch01 = new PIXI.Sprite(scratchTexture);
+  scratch01.position.set(450,50);
+  matrix.addChild(matrix01);
+  matrix.addChild(scratch01);
+
+  matrix02Texture = PIXI.utils.TextureCache["assets/10000.png"];
+  matrix02 = new PIXI.Sprite(matrix02Texture);
+  matrix02.position.set(600,50);
+  scratch02 = new PIXI.Sprite(scratchTexture);
+  scratch02.position.set(600,50);
+  matrix.addChild(matrix02);
+  matrix.addChild(scratch02);
+
+  matrix10Texture = PIXI.utils.TextureCache["assets/freeplay.png"];
+  matrix10 = new PIXI.Sprite(matrix10Texture);
+  matrix10.position.set(300,200);
+  scratch10 = new PIXI.Sprite(scratchTexture);
+  scratch10.position.set(300,200);
+  matrix.addChild(matrix10);
+  matrix.addChild(scratch10);
+
+  matrix11Texture = PIXI.utils.TextureCache["assets/100.png"];
+  matrix11 = new PIXI.Sprite(matrix11Texture);
+  matrix11.position.set(450,200);
+  scratch11 = new PIXI.Sprite(scratchTexture);
+  scratch11.position.set(450,200);
+  matrix.addChild(matrix11);
+  matrix.addChild(scratch11);
+
+  matrix12Texture = PIXI.utils.TextureCache["assets/100000.png"];
+  matrix12 = new PIXI.Sprite(matrix12Texture);
+  matrix12.position.set(600,200);
+  scratch12 = new PIXI.Sprite(scratchTexture);
+  scratch12.position.set(600,200);
+  matrix.addChild(matrix12);
+  matrix.addChild(scratch12);
+
+  matrix20Texture = PIXI.utils.TextureCache["assets/100.png"];
+  matrix20 = new PIXI.Sprite(matrix20Texture);
+  matrix20.position.set(300,350);
+  scratch20 = new PIXI.Sprite(scratchTexture);
+  scratch20.position.set(300,350);
+  matrix.addChild(matrix20);
+  matrix.addChild(scratch20);
+
+  matrix21Texture = PIXI.utils.TextureCache["assets/100000.png"];
+  matrix21 = new PIXI.Sprite(matrix21Texture);
+  matrix21.position.set(450,350);
+  scratch21 = new PIXI.Sprite(scratchTexture);
+  scratch21.position.set(450,350);
+  matrix.addChild(matrix21);
+  matrix.addChild(scratch21);
+
+  matrix22Texture = PIXI.utils.TextureCache["assets/freeplay.png"];
+  matrix22 = new PIXI.Sprite(matrix22Texture);
+  matrix22.position.set(600,350);
+  scratch22 = new PIXI.Sprite(scratchTexture);
+  scratch22.position.set(600,350);
+  matrix.addChild(matrix22);
+  matrix.addChild(scratch22);
+
+}
+
+function mouseEventsCheck()
+{
+
+   matrix.mouseover = function(mouseData){
+     if(counter === 9)
+     {
+       nextTexture = PIXI.utils.TextureCache["assets/next.png"];
+       nextSprite = new PIXI.Sprite(nextTexture);
+       nextSprite.position.set(300,530);
+       nextSprite.interactive = true;
+       nextSprite.click = function(mouseData){
+         nextGame();
+       }
+       stage.removeChild(sprite1);
+       stage.addChild(nextSprite);
+       renderer.render(stage);
+     }
+     else {
+       removeScratches(mouseData);
+     }
+  }
+  sprite1.click = function(mouseData){
+     startGame();
+  }
+
+  sprite1.touchstart = function(touchData){
+     removeScratches(touchData);
+  }
+
+}
+
+function removeScratches(mouseData)
+{
+  var coords = mouseData.data.getLocalPosition(matrix.parent);
+  console.log("MOUSE OVER!"+coords.x+"-"+coords.y);
+   if(coords.x >= 300 && coords.x <= 450 && coords.y >= 50 && coords.y <= 200)
+   {
+     if(flag[0] === 0)
+     counter++;
+     flag[0] = 1;
+     matrix.removeChild(scratch00);
+     renderer.render(stage);
+   }
+   if(coords.x >= 451 && coords.x <= 600 && coords.y >= 50 && coords.y <= 200)
+   {
+     if(flag[1] === 0)
+     counter++;
+     flag[1] = 1;
+     matrix.removeChild(scratch01);
+     renderer.render(stage);
+   }
+   if(coords.x >= 601 && coords.x <= 750 && coords.y >= 50 && coords.y <= 200)
+   {
+     if(flag[2] === 0)
+     counter++;
+     flag[2] = 1;
+     matrix.removeChild(scratch02);
+     renderer.render(stage);
+   }
+   if(coords.x >= 300 && coords.x <= 450 && coords.y >= 200 && coords.y <= 350)
+   {
+     if(flag[3] === 0)
+     counter++;
+     flag[3] = 1;
+     matrix.removeChild(scratch10);
+     renderer.render(stage);
+   }
+   if(coords.x >= 451 && coords.x <= 600 && coords.y >= 200 && coords.y <= 350)
+   {
+     if(flag[4] === 0)
+     counter++;
+     flag[4] = 1;
+     matrix.removeChild(scratch11);
+     renderer.render(stage);
+   }
+   if(coords.x >= 601 && coords.x <= 750 && coords.y >= 200 && coords.y <= 350)
+   {
+     if(flag[5] === 0)
+     counter++;
+     flag[5] = 1;
+     matrix.removeChild(scratch12);
+     renderer.render(stage);
+   }
+   if(coords.x >= 300 && coords.x <= 450 && coords.y >= 350 && coords.y <= 500)
+   {
+     if(flag[6] === 0)
+     counter++;
+     flag[6] = 1;
+     matrix.removeChild(scratch20);
+     renderer.render(stage);
+   }
+   if(coords.x >= 451 && coords.x <= 600 && coords.y >= 350 && coords.y <= 500)
+   {
+     if(flag[7] === 0)
+     counter++;
+     flag[7] = 1;
+     matrix.removeChild(scratch21);
+     renderer.render(stage);
+   }
+   if(coords.x >= 601 && coords.x <= 750 && coords.y >= 350 && coords.y <= 500)
+   {
+     if(flag[8] === 0)
+     counter++;
+     flag[8] = 1;
+     matrix.removeChild(scratch22);
+     renderer.render(stage);
+   }
+}
+function startGame()
+{
+  message = new PIXI.Text(
+    "Game Started",
+    {font: "32px sans-serif", fill: "black"}
+  );
+
+  message.position.set(50,280);
+  matrix.interactive = true;
+  stage.removeChild(message1);
+  stage.addChild(message);
+  renderer.render(stage);
+}
+
+function nextGame()
+{
+  message1 = new PIXI.Text(
+    "Play Again.",
+    {font: "32px sans-serif", fill: "black"}
+  );
+
+  message1.position.set(50,280);
+  stage.removeChild(message);
+  stage.addChild(message1);
+  matrix.addChild(scratch00);
+  matrix.addChild(scratch01);
+  matrix.addChild(scratch02);
+  matrix.addChild(scratch10);
+  matrix.addChild(scratch11);
+  matrix.addChild(scratch12);
+  matrix.addChild(scratch20);
+  matrix.addChild(scratch21);
+  matrix.addChild(scratch22);
+  matrix.interactive = true;
+  counter = 0;
+  flag = [0,0,0,0,0,0,0,0,0];
+  stage.addChild(matrix);
+  renderer.render(stage);
+}
+
+</script>
+</body>
+</html>
