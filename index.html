@@ -191,6 +191,9 @@ function mouseEventsCheck()
          nextSprite.click = function(mouseData){
            nextGame();
          }
+         nextSprite.touchstart = function(touchData){
+           nextGame();
+         }
        }
      }
   }
@@ -211,6 +214,9 @@ function mouseEventsCheck()
         stage.addChild(nextSprite);
         renderer.render(stage);
         nextSprite.click = function(mouseData){
+          nextGame();
+        }
+        nextSprite.touchstart = function(touchData){
           nextGame();
         }
       }
